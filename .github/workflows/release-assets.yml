@@ -1,0 +1,58 @@
+name: Publish release assets
+on:
+  release:
+    types: [published]
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/release-assets.yml
+
+permissions:
+  contents: write
+
+jobs:
+  assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Validate release tag and source artifacts
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag=$(node -p "require('./manifest.json').version")
+          if [[ "$GITHUB_EVENT_NAME" == "release" ]]; then
+            [[ "$tag" == "$RELEASE_EVENT_TAG" ]] || { echo "Version/tag mismatch"; exit 1; }
+          fi
+          git rev-parse --verify "refs/tags/$tag" >/dev/null
+          for file in main.js manifest.json styles.css; do
+            git show "$tag:$file" | cmp - "$file"
+          done
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+        env:
+          RELEASE_EVENT_TAG: ${{ github.event.release.tag_name }}
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - name: Verify reproducible JavaScript bundle
+        run: git diff --exit-code -- main.js
+      - name: Upload only Obsidian-supported assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          gh release upload "$RELEASE_TAG" main.js manifest.json styles.css --repo "$GITHUB_REPOSITORY" --clobber
+      - name: Verify release asset names
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          names=$(gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name' | sort)
+          expected=$(printf '%s\n' main.js manifest.json styles.css | sort)
+          test "$names" = "$expected"
