@@ -1,6 +1,6 @@
 {
-  "name": "obsidian-floating-note-manager",
-  "version": "0.1.22",
+  "name": "floating-note-manager",
+  "version": "0.1.23",
   "private": true,
   "type": "module",
   "description": "Obsidian native floating note manager",

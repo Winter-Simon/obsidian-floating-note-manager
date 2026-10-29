@@ -1,44 +1,52 @@
 # Floating Note Manager
 
-A lightweight desktop-only Obsidian plugin for searching, creating, and editing Markdown notes in native floating windows without interrupting your workflow.
+A lightweight, desktop-only [Obsidian](https://obsidian.md/) plugin to search, create, and edit Markdown notes in native floating windows without interrupting your workflow.
 
-**Initial public preview — v0.1.22.** Requires desktop Obsidian.
+**Latest release: 0.1.23** | [Download](https://github.com/Winter-Simon/obsidian-floating-note-manager/releases/latest) | [MIT license](LICENSE)
 
 ## Features
 
-- Open a standalone note picker from other apps using an optional system-wide shortcut, such as Alt+W.
-- Search Markdown file names and paths. Create a new note directly from the first action.
-- Edit notes in native Obsidian popout windows, not a replacement Markdown editor.
-- Press Esc to tuck a note away; recall a hidden window without recreating the editor.
-- Optional always-on-top pinning, recent notes, keyboard navigation, and per-note sizing.
-- Global picker does not intentionally restore or focus the main Obsidian window.
+- **Global hotkey** (opt-in): summon a dedicated note picker from another application without intentionally restoring the main Obsidian window.
+- **Search or create:** type a filename and press Enter on the first option to create that note, or use the arrows to open an existing match.
+- **Native Markdown editor:** notes open in original Obsidian floating editor windows, not in a replacement editor.
+- **Hide and recall:** Esc tucks away a floating note, preserving its editor for quick recall.
+- **Window controls:** recent notes, per-note sizing and optional always-on-top pinning.
 
 ## Installation
 
-Download main.js, manifest.json and styles.css from the repository. Place all three into:
+This plugin is not yet accepted into the official Community directory. Until approved, download the latest Release's main.js, manifest.json and styles.css (or extract the release ZIP) into:
 
-```text
-<Vault>/.obsidian/plugins/obsidian-floating-note-manager/
-```
+    <Vault>/.obsidian/plugins/floating-note-manager/
 
-Restart Obsidian and enable **Floating Note Manager** in **Settings → Community plugins**.
+Restart Obsidian and enable **Floating Note Manager** under Settings > Community plugins. Optionally enable a system-wide shortcut in settings; it is off by default.
 
-## Usage
+## Migrating from 0.1.22 or earlier
 
-Enable the global shortcut in the plugin settings if desired (disabled by default). Choose a combination not already occupied by another program. In the picker, type a name and press Enter to create a note; use the arrow keys to choose an existing match. Esc hides the picker or a managed floating note.
+**Breaking identifier change:** The official plugin ID changed from **obsidian-floating-note-manager** to **floating-note-manager** to meet Obsidian Community directory requirements. Obsidian sees them as separate plugins.
 
-All notes are ordinary Markdown files stored in your vault. The plugin's data.json contains only settings and recently opened file references.
+1. Completely exit Obsidian and back up the vault and the old plugin's data.json.
+2. Install version 0.1.23 into a **new** floating-note-manager folder. Do not delete or overwrite the old folder.
+3. Optional: with Obsidian closed, copy the old plugin's data.json into the new plugin directory to retain your shortcut and recent note settings.
+4. Disable the old plugin **before** enabling the new one. Never enable the same global shortcut in both.
+5. Restart Obsidian and verify new settings, note creation and window behavior. Your Markdown documents are not modified.
 
-## Compatibility
+## Compatibility and privacy
 
-Desktop only. Native window behavior, global shortcuts and pinning rely on Electron/Obsidian integration and may vary with version and theme. Search matches file names and paths, not full-text content.
+- Desktop Obsidian 1.13.1 or newer (minimum declared version). Not intended for mobile.
+- Native window management and global shortcuts use desktop Obsidian/Electron interfaces. Availability depends on operating system, app build and other shortcuts.
+- Search matches Markdown filenames and paths, not full note contents.
+- The plugin works locally without network services or telemetry. Only preferences, recent file paths and window state are stored in its own data.json. Your Markdown files remain in the vault.
 
 ## Development
 
-```sh
-npm install
-npm run build
-npm test
-```
+Requires Node.js 24+ and npm:
 
-Source: src/. Tests: tests/. The build produces main.js.
+    npm ci
+    npm run build
+    npm test
+
+Source: [src/](src); tests: [tests/](tests). Build output: main.js.
+
+## License
+
+MIT License, Copyright 2026 WinterSimon. This is a community-developed plugin not affiliated with Obsidian.

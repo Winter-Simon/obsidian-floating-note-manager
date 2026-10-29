@@ -8,10 +8,10 @@ const adapter=readFileSync(new URL("../src/electron-global-hotkey.ts",import.met
 const styles=readFileSync(new URL("../styles.css",import.meta.url),"utf8");
 const manifest=JSON.parse(readFileSync(new URL("../manifest.json",import.meta.url),"utf8"));
 
-test("English display name keeps stable plugin identifier and data location",()=>{
+test("community-directory-compliant identity and version",()=>{
   assert.equal(manifest.name,"Floating Note Manager");
-  assert.equal(manifest.id,"obsidian-floating-note-manager");
-  assert.equal(manifest.version,"0.1.22");
+  assert.equal(manifest.id,"floating-note-manager");
+  assert.equal(manifest.version,"0.1.23");
 });
 
 test("system hotkey invokes only a standalone native popout picker; main stays untouched",()=>{
