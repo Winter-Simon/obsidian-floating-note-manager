@@ -29,7 +29,7 @@ export function nativeFromChildWindow(
   if(!child || child===main || child.closed) return null;
   try {
     const native=(child as Window&{electronWindow?:NativePopoutWindow}).electronWindow;
-    const parent=(main as (Window&{electronWindow?:NativePopoutWindow})|null)?.electronWindow;
+    const parent=main && "electronWindow" in main ? main.electronWindow : undefined;
     if(native && native!==parent && typeof native.getBounds==="function" &&
       typeof native.setAlwaysOnTop==="function" &&
       !native.isDestroyed?.()) return native;
@@ -87,7 +87,7 @@ export function temporarilyHideNativePopout(
         try {if(!native.isDestroyed?.()) native.setOpacity?.(oldOpacity);}
         catch(error){console.warn("[浮动笔记管理器] 恢复窗口透明度失败",error);}
       };
-    }catch(error){console.info("[浮动笔记管理器] 原生透明度不可用",error);}
+    }catch{/* Unsupported native opacity: fall back to hide/show. */}
   }
   if(typeof native.hide!=="function"||typeof native.show!=="function") return null;
   try {
@@ -99,8 +99,8 @@ export function temporarilyHideNativePopout(
       try {if(!native.isDestroyed?.()) native.show?.();}
       catch(error){console.warn("[浮动笔记管理器] 恢复原生窗口显示失败",error);}
     };
-  }catch(error) {
-    console.info("[浮动笔记管理器] 无法预先隐藏浮窗",error);
+  }catch {
+    // A native hide failure is nonfatal; continue without the curtain.
     return null;
   }
 }

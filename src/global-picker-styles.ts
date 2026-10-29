@@ -89,10 +89,11 @@ body.fnm-global-picker-window .fnm-global-picker input {
 
 export function installPickerWindowStyles(doc:Document):void {
   if(doc.getElementById(PICKER_STYLE_ID))return;
-  const style=doc.createElement("style");
-  style.id=PICKER_STYLE_ID;
+  // createEl on this child document's host keeps the element in the
+  // independent popout and follows the Obsidian DOM helper convention.
+  const parent=doc.head??doc.documentElement;
+  const style=parent.createEl("style",{attr:{id:PICKER_STYLE_ID}});
   style.textContent=PICKER_WINDOW_CSS;
-  (doc.head??doc.documentElement).appendChild(style);
 }
 export function removePickerWindowStyles(doc:Document):void {
   doc.getElementById(PICKER_STYLE_ID)?.remove();

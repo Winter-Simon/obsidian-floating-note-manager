@@ -66,13 +66,20 @@ export function dropLegacyPreset(bounds: WindowBounds | null): WindowBounds | nu
   return bounds;
 }
 
+/** Windows rejects ASCII control characters in path segments. Check them
+ * explicitly instead of a control-character regexp (which trips lint). */
+function hasControlCharacter(value:string):boolean {
+  for(const ch of value) if(ch.charCodeAt(0)<32)return true;
+  return false;
+}
+
 /** Reject absolute, escaping, and ambiguous vault paths. */
 export function validateScratchFolder(input: string): string {
   const folder = input.trim().replace(/\\/g, "/").replace(/\/+$/g, "");
   if (!folder) return "";
   if (folder.startsWith("/") || /^[A-Za-z]:/.test(folder) ||
       folder.split("/").some((segment) => !segment || segment === "." || segment === "..") ||
-      /[<>:"|?*\u0000-\u001f]/.test(folder)) {
+      /[<>:"|?*]/.test(folder) || hasControlCharacter(folder)) {
     throw new Error("草稿目录必须是库内相对路径，且不能包含非法字符。");
   }
   return folder;
@@ -84,7 +91,7 @@ export function validateScratchName(input: string): string {
   const raw = input.trim();
   const name = raw.replace(/\.md$/i, "").trim();
   if (!name || name.length > 120 || name === "." || name === ".." ||
-      name.endsWith(".") || /[\\/<>:"|?*\u0000-\u001f]/.test(name) ||
+      name.endsWith(".") || /[\\/<>:"|?*]/.test(name) || hasControlCharacter(name) ||
       /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\..*)?$/i.test(name)) {
     throw new Error("请输入有效的笔记名称（不含路径或非法字符，最长 120 字）。");
   }

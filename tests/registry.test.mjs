@@ -46,6 +46,10 @@ test("new scratch names remain human-readable and are safe across Windows filesy
     "笔记.", "." , "a".repeat(121)]) {
     assert.throws(()=>validateScratchName(name),{name:"Error"});
   }
+  for(const code of [0,1,9,10,13,31]){
+    assert.throws(()=>validateScratchName("test"+String.fromCharCode(code)+"name"));
+    assert.throws(()=>validateScratchFolder("test"+String.fromCharCode(code)+"folder"));
+  }
 });
 
 test("saved extreme window sizes are not silently discarded",()=>{

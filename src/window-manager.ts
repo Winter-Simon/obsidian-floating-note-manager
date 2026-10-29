@@ -144,12 +144,9 @@ export class FloatingWindowManager {
           preparedNative=resolution.native;
           if(saved) revealWindow=temporarilyHideNativePopout(preparedNative);
           this.prepareInitialGeometry(preparedNative,desired,file.path);
-          console.info("[浮动笔记管理器] 原生窗口仅能在创建后绑定",file.path);
-        } else {
-          console.info("[浮动笔记管理器] 创建阶段无法绑定原生窗口",{
-            path:file.path,reason:resolution.reason,desired,
-          });
         }
+        // An unresolved provisional handle is expected on some Obsidian
+        // builds; the verified child handle is checked after openFile().
       }
       await leaf.openFile(file,{active:true});
       const win = leaf.view.containerEl.ownerDocument.defaultView;
@@ -315,9 +312,7 @@ export class FloatingWindowManager {
       const resolution=identifyNativePopout(state.win);
       if(resolution.ok) state.native=resolution.native;
       else {
-        console.info("[浮动笔记管理器] 窗口识别诊断",resolution.reason,{
-          path:state.path,x:state.win.screenX,y:state.win.screenY,
-          width:state.win.outerWidth,height:state.win.outerHeight});
+        // An actionable Notice is more useful than logging private note paths.
         if(notify) new Notice(resolution.reason==="remote-unavailable"
           ? "未获取到 Electron 窗口接口，无法改变置顶状态。"
           : resolution.reason==="ambiguous"

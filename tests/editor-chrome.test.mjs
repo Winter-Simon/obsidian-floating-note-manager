@@ -6,7 +6,7 @@ const css=readFileSync(new URL("../styles.css",import.meta.url),"utf8");
 const manifest=JSON.parse(readFileSync(new URL("../manifest.json",import.meta.url),"utf8"));
 
 test("native floating note titlebar uses the editor background, not theme accent",()=>{
-  assert.equal(manifest.version,"0.1.24");
+  assert.equal(manifest.version,"0.1.25");
   const start=css.indexOf("/* Floating editor chrome blends into its content");
   const end=css.indexOf("/* Blue Topaz adds a tinted background",start);
   assert.ok(start>=0 && end>start,"managed popout chrome block must be present");

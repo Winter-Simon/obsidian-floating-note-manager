@@ -10,6 +10,12 @@ export type HotkeyResult =
   |{ok:false;reason:"disabled"|"invalid"|"unavailable"|"occupied"|"error"};
 export const DEFAULT_GLOBAL_HOTKEY="Ctrl+Alt+Space";
 
+const HOTKEY_MODIFIERS:Record<string,string> = {
+  control:"Control",ctrl:"Control",commandorcontrol:"CommandOrControl",
+  cmdorctrl:"CommandOrControl",alt:"Alt",option:"Alt",
+  shift:"Shift",super:"Super",meta:"Super",command:"Super",
+};
+
 /** At least one modifier and one unambiguous key. Bare keys,
  * unknown Electron accelerators and reserved system keys are disallowed. */
 export function normalizeHotkey(raw:string):string|null {
@@ -20,11 +26,7 @@ export function normalizeHotkey(raw:string):string|null {
   let key:string|null=null;
   for(const part of parts) {
     const lowered=part.toLowerCase().replace(/\s/g,"");
-    const modifier={
-      control:"Control",ctrl:"Control",commandorcontrol:"CommandOrControl",
-      cmdorctrl:"CommandOrControl",alt:"Alt",option:"Alt",
-      shift:"Shift",super:"Super",meta:"Super",command:"Super",
-    }[lowered] as string|undefined;
+    const modifier=HOTKEY_MODIFIERS[lowered];
     if(modifier){
       if(modifiers.includes(modifier))return null;
       modifiers.push(modifier);

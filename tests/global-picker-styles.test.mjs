@@ -14,15 +14,15 @@ test("independent child picker has scoped fallback CSS for tab chrome and UI",()
 
 test("child styles are inserted once and cleanly released on view close",()=>{
   const elements=new Map();
-  const head={appendChild(el){elements.set(el.id,el)}};
-  const doc={
-    head,
-    getElementById:id=>elements.get(id)??null,
-    createElement(tag){
+  const head={
+    createEl(tag,{attr}){
       assert.equal(tag,"style");
-      return {id:"",textContent:"",remove(){elements.delete(this.id)}};
+      const style={id:attr.id,textContent:"",remove(){elements.delete(this.id)}};
+      elements.set(style.id,style);
+      return style;
     },
   };
+  const doc={head,getElementById:id=>elements.get(id)??null};
   installPickerWindowStyles(doc);
   assert.equal(elements.size,1);
   const first=elements.get(PICKER_STYLE_ID);

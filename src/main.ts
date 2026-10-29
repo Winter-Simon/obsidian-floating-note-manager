@@ -211,7 +211,7 @@ export default class FloatingNotePlugin extends Plugin {
       occupied:"系统快捷键已被占用，请更换组合。",
       error:"注册系统快捷键时发生错误，请查看控制台。",
     }[result.reason];
-    console.info("[浮动笔记] 全局快捷键注册失败",result);
+    // The visible Notice already explains registration failures.
     new Notice(message);
   }
 

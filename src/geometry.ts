@@ -62,8 +62,8 @@ export function placeBounds(saved:WindowBounds|undefined,area:ScreenArea,
   const intersects=!!saved &&
     saved.x<screen.x+screen.width && saved.x+saved.width>screen.x &&
     saved.y<screen.y+screen.height && saved.y+saved.height>screen.y;
-  const x=intersects ? clamp(saved!.x,screen.x,maxX) : centerX;
-  const y=intersects ? clamp(saved!.y,screen.y,maxY) : centerY;
+  const x=intersects ? clamp(saved.x,screen.x,maxX) : centerX;
+  const y=intersects ? clamp(saved.y,screen.y,maxY) : centerY;
   return {x,y,width:Math.round(width),height:Math.round(height)};
 }
 
