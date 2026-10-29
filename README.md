@@ -2,7 +2,7 @@
 
 A lightweight, desktop-only [Obsidian](https://obsidian.md/) plugin to search, create, and edit Markdown notes in native floating windows without interrupting your workflow.
 
-**Latest release: 0.1.24** | [Download](https://github.com/Winter-Simon/obsidian-floating-note-manager/releases/latest) | [MIT license](LICENSE)
+**Latest release: 0.1.25** | [Download](https://github.com/Winter-Simon/obsidian-floating-note-manager/releases/latest) | [MIT license](LICENSE)
 
 ## Features
 
@@ -14,7 +14,7 @@ A lightweight, desktop-only [Obsidian](https://obsidian.md/) plugin to search, c
 
 ## Installation
 
-This plugin is not yet accepted into the official Community directory. Until approved, download the latest Release's three separate assets (main.js, manifest.json and styles.css) into:
+Use the **Add to Obsidian** link on the official Community Directory listing, or install manually by downloading the latest Release's three separate assets (main.js, manifest.json and styles.css) into:
 
     <Vault>/.obsidian/plugins/floating-note-manager/
 
@@ -31,6 +31,8 @@ Restart Obsidian and enable **Floating Note Manager** under Settings > Community
 5. Restart Obsidian and verify new settings, note creation and window behavior. Your Markdown documents are not modified.
 
 ## Community Directory review
+
+Version 0.1.25 reduces non-blocking review warnings and moves the standalone picker styling into the standard styles.css asset. The Community Directory review-branch scan completed with no blocking errors.
 
 Version 0.1.24 addresses the two blocking source-code audit findings in the initial 0.1.23 review: the duplicated settings heading and direct style assignments. It also replaces the plugin-name-prefixed command name and an unnecessary raw DOM creation. The new release intentionally includes only the three Obsidian-required assets.
 
