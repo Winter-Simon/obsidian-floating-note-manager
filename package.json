@@ -1,0 +1,19 @@
+{
+  "name": "obsidian-floating-note-manager",
+  "version": "0.1.22",
+  "private": true,
+  "type": "module",
+  "description": "Obsidian native floating note manager",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "node node_modules/typescript/bin/tsc --noEmit --skipLibCheck && node esbuild.config.mjs production",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.19",
+    "esbuild": "^0.25.12",
+    "obsidian": "^1.13.1",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "id": "obsidian-floating-note-manager",
+  "name": "Floating Note Manager",
+  "version": "0.1.22",
+  "minAppVersion": "1.5.0",
+  "description": "以原生 Obsidian 浮动窗口编辑、检索和召回笔记。",
+  "author": "WinterSimon",
+  "isDesktopOnly": true
+}

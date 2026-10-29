@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+*.map
+*.log
+.DS_Store
+.vscode/
+data.json
