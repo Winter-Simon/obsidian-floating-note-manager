@@ -1,5 +1,5 @@
 import {App, Notice, setIcon, TFile, WorkspaceLeaf} from "obsidian";
-import {centerSavedSize, sameBounds, validBounds, type WindowBounds, type ScreenArea} from "./geometry";
+import {centerSavedSize, sameBounds, type WindowBounds, type ScreenArea} from "./geometry";
 import {identifyNativePopout, nativeFromChildWindow, nativeFromWorkspaceEvent, resolveNativeForChild, readManagedBounds, restoreNativeBoundsBeforeEditor, temporarilyHideNativePopout, type NativePopoutWindow} from "./electron-adapter";
 import {hideCachedWindow,showCachedWindow,hiddenEvictionPaths} from "./window-cache";
 
@@ -195,12 +195,14 @@ export class FloatingWindowManager {
           // If native hide is unavailable, avoid editor reflow artifacts;
           // real OS frame flicker cannot be eliminated on that platform.
           const root=win.document.documentElement;
-          const priorVisibility=root.style.visibility;
-          if(!revealWindow) root.style.visibility="hidden";
+          const needsTemporaryHide=!revealWindow &&
+            !root.hasClass("fnm-geometry-restoring");
+          if(needsTemporaryHide) root.addClass("fnm-geometry-restoring");
           try {
             this.prepareInitialGeometry(state.native,desired,file.path);
           } finally {
-            root.style.visibility=priorVisibility;
+            // Restore the original class state even when native resizing fails.
+            if(needsTemporaryHide) root.removeClass("fnm-geometry-restoring");
           }
         }
       }
@@ -552,14 +554,13 @@ export class FloatingWindowManager {
     if (!doc.body) return;
     doc.body.addClass("fnm-managed-window");
     if (this.callbacks.minimalChrome()) doc.body.addClass("fnm-managed-popout");
-    const button = doc.createElement("button");
-    button.className = "fnm-pin-action clickable-icon";
-    button.type = "button";
-    button.setAttribute("aria-label", "切换浮动窗口置顶");
+    // Use the child document's own element helper to avoid cross-window DOM
+    // ownership issues and to follow Obsidian's createEl conventions.
+    const button=doc.body.createEl("button",{
+      cls:"fnm-pin-action clickable-icon",
+      attr:{"type":"button","aria-label":"切换浮动窗口置顶"},
+    });
     button.addEventListener("click", () => this.pin(state.path, !state.pinned));
-    // The stripped tab header is absent in some Obsidian titlebar layouts.
-    // Attach to this popout document instead of a fragile theme-specific host.
-    doc.body.appendChild(button);
     state.pinButton = button;
     this.updatePinButton(state);
   }

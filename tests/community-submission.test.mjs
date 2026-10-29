@@ -8,7 +8,7 @@ test("Obsidian community submission manifest satisfies identifier rules",()=>{
   assert.ok(!manifest.id.includes("obsidian"));
   assert.ok(!manifest.id.endsWith("plugin"));
   assert.equal(manifest.name,"Floating Note Manager");
-  assert.equal(manifest.version,"0.1.23");
+  assert.equal(manifest.version,"0.1.24");
   assert.equal(versions[manifest.version],manifest.minAppVersion);
   assert.equal(manifest.isDesktopOnly,true);
   assert.ok(manifest.description.length<=250);

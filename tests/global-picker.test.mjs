@@ -11,7 +11,7 @@ const manifest=JSON.parse(readFileSync(new URL("../manifest.json",import.meta.ur
 test("community-directory-compliant identity and version",()=>{
   assert.equal(manifest.name,"Floating Note Manager");
   assert.equal(manifest.id,"floating-note-manager");
-  assert.equal(manifest.version,"0.1.23");
+  assert.equal(manifest.version,"0.1.24");
 });
 
 test("system hotkey invokes only a standalone native popout picker; main stays untouched",()=>{

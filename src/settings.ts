@@ -35,7 +35,7 @@ export class FloatingNoteSettingTab extends PluginSettingTab {
   display(): void {
     const {containerEl} = this;
     containerEl.empty();
-    new Setting(containerEl).setName("Floating Note Manager").setHeading();
+    new Setting(containerEl).setName("通用设置").setHeading();
     new Setting(containerEl).setName("系统级全局快捷键")
       .setDesc("从其他应用直接弹出独立选择器，不唤醒 Obsidian 主窗口。首次默认关闭；按键冲突则无法注册。")
       .addToggle(toggle=>toggle.setValue(this.plugin.settings.globalHotkeyEnabled)

@@ -1,4 +1,8 @@
 
+/* Suppress editor content during a native window geometry correction. The
+ * class is set only on the affected child window and removed in finally. */
+html.fnm-geometry-restoring { visibility: hidden; }
+
 /* Global hotkey opens a standalone Obsidian child window, never a modal in
  * the main vault. Keep native window control buttons, hide editor tab chrome. */
 body.fnm-global-picker-window .mod-root .workspace-tab-header-container {

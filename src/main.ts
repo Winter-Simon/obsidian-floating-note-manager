@@ -80,7 +80,7 @@ export default class FloatingNotePlugin extends Plugin {
 
     this.registerView(GLOBAL_PICKER_VIEW_TYPE,leaf=>new GlobalNotePickerView(leaf,this));
     this.addRibbonIcon("panels-top-left", "Floating Note Manager", () => this.showManager());
-    this.addCommand({id:"open-manager",name:"打开 Floating Note Manager",
+    this.addCommand({id:"open-manager",name:"打开笔记管理器",
       callback:() => this.showManager()});
     this.addCommand({id:"float-current",name:"将当前笔记浮动打开",
       checkCallback:(checking) => {
