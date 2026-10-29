@@ -32,7 +32,7 @@ test("picker uses authoritative WorkspaceWindow instead of fragile DOM equality"
   assert.doesNotMatch(picker,/if\(!child\|\|child===main\)/);
   assert.match(picker,/doc\.body\.classList\.add\("fnm-global-picker-window"\)/);
   assert.match(picker,/\.classList\.remove\("fnm-global-picker-window"\)/);
-  assert.match(picker,/installPickerWindowStyles\(doc\)/);
+  assert.doesNotMatch(picker,/installPickerWindowStyles|removePickerWindowStyles|createElement\(["']style["']\)/);
   assert.match(picker,/isReady\(\):boolean/);
   assert.match(main,/!view\.isReady\(\)/);
 });

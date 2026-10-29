@@ -3,7 +3,6 @@ import type FloatingNotePlugin from "./main";
 import {navigateIndex,pickerKeyboardAction} from "./keyboard-selection";
 import {hideCachedWindow,showCachedWindow} from "./window-cache";
 import {resolveNativeForChild,type NativePopoutWindow} from "./electron-adapter";
-import {installPickerWindowStyles,removePickerWindowStyles} from "./global-picker-styles";
 import {PickerKeyCapture} from "./global-picker-keyboard";
 
 /** Dedicated Obsidian-native child window. Never attaches a Modal to the
@@ -51,7 +50,6 @@ export class GlobalNotePickerView extends ItemView {
     const doc=container.doc;
     this.pickerDoc=doc;
     doc.body.classList.add("fnm-global-picker-window");
-    installPickerWindowStyles(doc);
     this.containerEl.addClass("fnm-global-picker-leaf");
     this.contentEl.empty();
     try {
@@ -311,7 +309,6 @@ export class GlobalNotePickerView extends ItemView {
     const doc=this.pickerDoc;
     if(doc) {
       doc.body.classList.remove("fnm-global-picker-window");
-      removePickerWindowStyles(doc);
     }
     this.pickerDoc=null;
     this.plugin.onGlobalPickerClosed(this);
